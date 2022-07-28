@@ -12,30 +12,31 @@ const FavoritesContext = createContext({
 export function FavoritesContextProvider({ children }) {
   const [userFavorites, setUserFavorites] = useState([]);
 
-  //save to local
-  useEffect(()=>{
+  //run once
+  useEffect(() => {
     getLocalFavorites();
-  },[])
+  }, []);
+  //save to local
+  useEffect(() => {
+    saveToLocalFavorites();
+  }, [userFavorites]);
+
   function saveToLocalFavorites() {
-    if(localStorage.getItem("favorites") === null) {
+    localStorage.setItem("favorites", JSON.stringify(userFavorites));
+  }
+
+  function getLocalFavorites() {
+    if (localStorage.getItem("favorites") === null) {
       localStorage.setItem("favorites", JSON.stringify([]));
-    }else {
-      localStorage.setItem("favorites", JSON.stringify(userFavorites))
+    } else {
+      let favoritesFromLocal = JSON.parse(localStorage.getItem("favorites"));
+      setUserFavorites(favoritesFromLocal);
     }
-    
-  };
-  
-  function getLocalFavorites () {
-    if(localStorage.getItem("favorites") === null) {
-      localStorage.setItem("favorites", JSON.stringify([]));
-    }else {
-      localStorage.setItem("favorites", JSON.stringify(userFavorites))
-    }
-  };
+  }
 
   function addFavoriteHandler(favoriteMeetup) {
     setUserFavorites((prevUserFavorites) => {
-      return prevUserFavorites.concat(favoriteMeetup)
+      return prevUserFavorites.concat(favoriteMeetup);
     });
     saveToLocalFavorites();
   }
