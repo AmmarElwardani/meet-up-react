@@ -3,7 +3,7 @@ import FavoritesContext from "../store/favorites-context";
 import MeetupList from "../components/meetups/MeetupList";
 const FavoritesPage = () => {
   const favoritesCtx = useContext(FavoritesContext);
-
+  
   let content;
 
   if (favoritesCtx.totalFavorites === 0) {
